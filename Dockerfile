@@ -10,10 +10,9 @@ RUN apt update && apt install -y git dash make cmake clang
 COPY . .
 RUN dash build_redisjson.sh
 
-FROM redis-latest
+FROM redis:latest
 ARG PORT=6379
 COPY --from=redisearch /opt/plugins/redisearch.so ./
 COPY --from=redisjson /opt/plugins/redisjson.so ./
-RUN redis-server --loadmodule redisearch.so && redis-server --loadmodule redisjson.so
 EXPOSE ${PORT}
-CMD ["/usr/bin/redis-server", "--port", ${PORT}]
+ENTRYPOINT ["/usr/bin/redis-server", "--loadmodule", "./redisearch.so", "--loadmodule", "./redisjson.so", "--port", ${PORT}]
