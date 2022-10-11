@@ -1,0 +1,4 @@
+requirepass $PASSWORD
+port $PORT
+loadmodule ./redisearch.so
+loadmodule ./redisjson.so
